@@ -1,0 +1,58 @@
+<form [formGroup]='form' *ngIf="form" (ngSubmit)="form.valid && submitInquiry()" autocomplete="off">
+  <h2 class="text-center text-primary">Inquiry Form</h2>
+  <div class="row justify-content-center">
+    <app-text-input [formControl]='form.controls["name"]' [label]='"Name"'></app-text-input>
+    <app-text-input [formControl]='form.controls["email"]' [label]='"Email"'></app-text-input>
+    <app-text-input [formControl]='form.controls["phone"]' [label]='"Phone"'></app-text-input>
+    <app-text-input [formControl]='form.controls["number"]' [label]='"Number"'></app-text-input>
+    <div class="mb-3">
+      <select [formControl]="form.controls['type']" class="form-control" placeholder='"Type"'>
+        <option [ngValue]="null" selected disabled>--select type--</option>
+        <option *ngFor="let type of types" [ngValue]="type">{{type}}</option>
+        <div *ngIf="form.get('type').hasError('required')" class="invalid-feedback">Please enter a Type</div>
+      </select>
+    </div>
+    <div class="mb-3">
+      <textarea [formControl]="form.controls['description']" class="form-control" placeholder='Description' cols="40"
+        rows="5"></textarea>
+        <div *ngIf="form.get('description').hasError('required')" class="invalid-feedback">Please enter a Description</div>
+    </div>
+
+    <div class="row" *ngIf="validationErrors.length > 0">
+      <ul class="text-danger">
+        <li *ngFor="let error of validationErrors">
+          {{error}}
+        </li>
+      </ul>
+    </div>
+
+    <div class="form-group text-center">
+      <button [disabled]='!form.valid' class="btn btn-success mr-2" type="submit">Submit</button>
+    </div>
+  </div>
+</form>
+
+<table class="table table-striped mt-4">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Email</th>
+      <th scope="col">Phone</th>
+      <th scope="col">Number</th>
+      <th scope="col">Type</th>
+      <th scope="col">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of inquiries; index as i">
+      <th scope="row">{{ i + 1 }}</th>
+      <td>{{ item.name }}</td>
+      <td>{{ item.email }}</td>
+      <td>{{ item.phone }}</td>
+      <td>{{ item.number }}</td>
+      <td>{{ item.type }}</td>
+      <td>{{ item.description }}</td>
+    </tr>
+  </tbody>
+</table>
